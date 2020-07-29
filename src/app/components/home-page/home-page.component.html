@@ -1,0 +1,50 @@
+
+<button mat-fab color="warn" (click)="openCreateTodoPage()" style="position:absolute;right: 35px;top:80px">
+    <mat-icon style="font-size:x-large;font-weight: bold;">add</mat-icon>
+</button>
+<button mat-fab color="warn" (click)="openCreateCategoryPage()" style="position:absolute;right: 35px;top:150px">
+    <mat-icon>settings</mat-icon>
+</button>
+<ng-container *ngIf="todos$ | async as todos">
+    <div class="row m-2">
+        <ng-container *ngFor="let id of todos.ids">
+            <mat-card class="m-2 col-md-4" style="border-radius: 15px;box-shadow: 3px 3px 3px rgba(68, 68, 68, 0.6);">
+                <span class="table-add d-flex justify-content-end">
+                    <a class="text-primary mx-2" style="cursor: pointer;" (click)="editTodo(id)">
+                        <mat-icon style="color: #007bff;">edit
+                        </mat-icon>
+                    </a>
+                    <a class="text-primary" style="cursor: pointer;" (click)="deleteTodo(id)">
+                        <mat-icon style="color: #f44336;">delete
+                        </mat-icon>
+                    </a>
+                </span>
+                <mat-card-header>
+                    <mat-card-title>{{todos?.entities[id].name}}</mat-card-title>
+                    <mat-card-subtitle>{{todos?.entities[id].description}}</mat-card-subtitle>
+                </mat-card-header>
+                <h3 style="color : #f44336;margin-bottom: 0;" class="ml-3">Tasks</h3>
+                <div *ngFor="let task of todos.entities[id].tasks;let taskIndex = index" class="m-1 p-1">
+                    <mat-card style="background-color:#f77b72;color: white;padding: 2px;">
+                        <mat-checkbox class="col-md-1 mr-2" style="color: white;" [checked]="task.status === 'COMPLETED'" (change)="taskStatusChanged($event,todos.entities[id],taskIndex)">
+                            <mat-card-title class="my-1" style="font-size: medium;">{{task.name}}</mat-card-title>
+                            <mat-card-subtitle class="mb-1">{{task.description}}</mat-card-subtitle>
+                        </mat-checkbox>
+                    </mat-card>
+                </div>
+                <mat-card-actions class="m-1 p-1" style="justify-content: end;">
+                    <div class="row">
+                        <span class="col-md-4"><label style="color:#007bff;margin-bottom: 0;" class="px-1">Status : </label>
+                        <button mat-flat-button [ngClass]="displayTodoStatus(todos.entities[id].status)">
+                            {{todos?.entities[id]?.status}}</button></span>
+                            <!-- <h3 class="px-1 mb-1">{{todos?.entities[id]?.status}} </h3></span> -->
+                        <div class="col-md-3"></div>
+                        <span class="col-md-4"><label style="color:#007bff; margin-bottom: 0;" class="px-1">Category : </label>
+                        <h3 class="px-1 mb-1">{{todos?.entities[id]?.category?.name}} </h3></span>
+                    </div>
+                </mat-card-actions>
+
+            </mat-card>
+        </ng-container>
+    </div>
+</ng-container>

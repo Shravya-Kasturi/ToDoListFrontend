@@ -1,0 +1,192 @@
+<div class="row mx-0 p-1">
+   
+        <a color="primary" size="30" class="m-2" style="cursor: pointer;" (click)="goToHomePage()">
+            <mat-icon style="font-size:xx-large;color: #f44336;">reply</mat-icon>
+        </a>
+        <h2 style="color: #f44336;font-weight: 500;" class="px-2 mt-2">Add / Edit Todo</h2>
+
+</div>
+<div class="px-5">
+    <form #form="ngForm">
+        <mat-card class="inn-container m-3">
+            <h3 class="px-3 text-info title">Add Todo</h3>
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="md-form">
+                            <label data-error="wrong" data-success="right" for="todoName"><span class="redAsterik">*
+                                </span>
+                                Task Name</label>
+                            <input type="text" id="todoName" class="form-control validate mb-4"
+                                [(ngModel)]="newTodo.name" name="todoName" #todoName="ngModel" [required]="true">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="md-form">
+                            <label data-error="wrong" data-success="right" for="todoDes"><span class="redAsterik">*
+                                </span>
+                                Task Description</label>
+                            <input type="text" id="todoDes" class="form-control validate mb-4"
+                                [(ngModel)]="newTodo.description" name="todoDes" #todoDes="ngModel" [required]="true">
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-1">
+                <div class="row px-1" style="background-color: lightcyan; border-radius: 10px;height: 30px;">
+                    <h3>Sub Tasks</h3>
+                    <span class="table-add d-flex flex-fill justify-content-end">
+                        <a class="text-primary" style="cursor: pointer;" (click)="addNewTask()">
+                            <mat-icon>add_circle
+                            </mat-icon>
+                        </a>
+                    </span>
+                </div>
+                <ng-container *ngFor="let task of newTodo.tasks; let index = index">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="md-form">
+                                <label data-error="wrong" data-success="right" for="taskName"><span class="redAsterik">*
+                                    </span>
+                                    Task Name</label>
+                                <input type="text" id="{{'taskName'+index}}" class="form-control validate mb-4"
+                                    [(ngModel)]="newTodo.tasks[index].name" name="{{'taskName'+index}}" [required]="true">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="md-form">
+                                <label data-error="wrong" data-success="right" for="taskName"><span class="redAsterik">*
+                                    </span>
+                                    Task Description</label>
+                                <input type="text" id="{{'taskDes'+index}}" class="form-control validate mb-4"
+                                    [(ngModel)]="newTodo.tasks[index].description" name="{{'taskDes'+index}}" [required]="true">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <!-- <div class="md-form"> -->
+                            <label data-error="wrong" data-success="right" for="taskName"><span class="redAsterik">*
+                                </span>
+                                Task Status</label>
+                            <mat-form-field appearance="fill">
+                                <mat-select [(value)]="newTodo.tasks[index].status">
+                                    <mat-option *ngFor="let status of statusOptions" [value]="status.value">
+                                        {{status.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <!-- </div> -->
+                        </div>
+                        <div class="col-md-2">
+                            <label data-error="wrong" data-success="right" for="taskName"><span class="redAsterik">*
+                                </span>
+                                Task Duedate</label>
+                            <input type="date" id="{{'taskDueDate'+index}}" class="form-control validate mb-4"
+                                [(ngModel)]="newTodo.tasks[index].dueDate" (change)="setMaxDueDate(index)" name="{{'taskDueDate'+index}}" [required]="true">
+                        </div>
+                        <div class="col-md-1 py-4">
+                            <a color="primary" size="sm" class="my-2" style="cursor: pointer;"
+                                (click)="removeTask(index)">
+                                <mat-icon>delete</mat-icon>
+                            </a>
+                        </div>
+                    </div>
+                </ng-container>
+                <hr class="my-1">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label data-error="wrong" data-success="right" for="todoDuedate"><span class="redAsterik">*
+                            </span>
+                            Task Duedate</label>
+                        <input type="date" id="{{'taskDueDate'+index}}" class="form-control validate mb-4"
+                        [ngModel] ="newTodo.dueDate" (ngModelChange)="newTodo.dueDate = $event" name="{{'taskDueDate'+index}}" [required]="true">
+                    </div>
+                    <div class="col-md-3">
+                        <label data-error="wrong" data-success="right" for="todoStatus"><span class="redAsterik">*
+                            </span>
+                            Task Status</label>
+                        <mat-form-field appearance="fill">
+                            <mat-select [(value)]="newTodo.status">
+                                <mat-option *ngFor="let status of statusOptions" [value]="status.value">
+                                    {{status.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+                        <label data-error="wrong" data-success="right" for="todoCategory"><span class="redAsterik">*
+                            </span>
+                            Task Category</label>
+                        <mat-form-field appearance="fill">
+                            <mat-select [(value)]="newTodo.category">
+                                <mat-option *ngFor="let category of categoryOptions" [value]="category.value">
+                                    {{category.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3" *ngIf="newTodo.completionDate">
+                        <label data-error="wrong" data-success="right" for="todoCompletionDate"><span class="redAsterik">*
+                            </span>
+                            Task Completion Date</label>
+                        <input type="date" id="todoCompletionDate" class="form-control validate mb-4"
+                        [ngModel] ="newTodo.completionDate"  name="todoCompletionDate" readonly="true">
+                    </div>
+                    <div class="col-md-3 py-4">
+                        <button mat-button style="background-color:darkred;color: white;" (click)="saveTodo(form)">Save</button>
+                    </div>
+                </div>
+
+            </div>
+        </mat-card>
+    </form>
+</div>
+
+<!-- <div class="col-md-2" *ngIf="type==CHANNEL_PARTNER_TYPES.INDIVIDUAL">
+                        <div class="md-form">
+                            <mdb-select [(ngModel)]="channelPartner.salutation" id="salutationInd"
+                                [options]="salutationOptions" placeholder="Select Salutation" [visibleOptions]="6"
+                                [filterEnabled]="true" name="salutationInd" #salutationInd="ngModel" [required]="true">
+                            </mdb-select>
+                            <label data-error="wrong" data-success="right" for="salutation"><span
+                                    class="redAsterik">*</span>
+                                Salutation
+                            </label>
+                            <mdb-error *ngIf="salutationInd.invalid && (salutationInd.dirty || salutationInd.touched)">
+                                Salutation is required</mdb-error>
+                        </div>
+                    </div>
+                    <div class="col-md-5" *ngIf="type==CHANNEL_PARTNER_TYPES.INDIVIDUAL">
+                        <div class="md-form">
+                            <label data-error="wrong" data-success="right" for="firstName"><span class="redAsterik">*
+                                </span>
+                                First Name</label>
+                            <input type="text" id="firstNameInd" class="form-control validate mb-4" mdbInput mdbActive
+                                [mdbValidate]="true" [(ngModel)]="channelPartner.firstName" name="firstNameInd"
+                                #firstNameInd="ngModel" [required]="true">
+                        </div>
+                    </div>
+                    <div class="col-md-5" *ngIf="type==CHANNEL_PARTNER_TYPES.INDIVIDUAL">
+                        <div class="md-form">
+                            <label data-error="wrong" data-success="right" for="lastName"><span class="redAsterik">*
+                                </span>
+                                Last Name</label>
+                            <input type="text" id="lastNameInd" class="form-control validate mb-4" mdbInput mdbActive
+                                [mdbValidate]="true" [(ngModel)]="channelPartner.lastName" name="lastName"
+                                #lastNameInd="ngModel" [required]="true">
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="md-form">
+                            <mdb-select [(ngModel)]="channelPartner.projects" id="projects" [options]="projectOptions"
+                                [multiple]="true" placeholder="Select Projects" [visibleOptions]="6"
+                                [filterEnabled]="true" name="projects" #projects="ngModel" [required]="true">
+                            </mdb-select>
+                            <label data-error="wrong" data-success="right" for="projects"><span
+                                    class="redAsterik">*</span>
+                                Projects
+                            </label>
+                            <mdb-error *ngIf="projects.invalid && (projects.dirty || projects.touched)">
+                                Project selection is required</mdb-error>
+                        </div>
+                    </div> -->

@@ -1,0 +1,110 @@
+<div class="px-5">
+    <!-- <button type="button" class="btn btn-primary mx-2" (click)="goToHomePage()">
+                 {{'< Go Back'}}
+            </button> -->
+    <div class="row">
+        <a color="primary" size="30" class="m-2" style="cursor: pointer;" (click)="goToHomePage()">
+            <mat-icon style="font-size:xx-large;color: #f44336;">reply</mat-icon>
+        </a>
+        <h2 style="color: #f44336;font-weight: 500;" class="px-2 mt-2">Categories</h2>
+    </div>
+    <button mat-fab color="warn" data-toggle="modal" data-target="#newCategoryModal"
+        style="position:absolute;right: 35px;top:85px;">
+        <mat-icon style="font-size:x-large;font-weight: bold;color: white;">add</mat-icon>
+    </button>
+    <!-- <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#newCategoryModal">
+                Add New Category
+            </button> -->
+    <ng-container *ngIf="categories$ | async as categories">
+        <div class="row">
+            <ng-container *ngFor="let categoryId of categories.ids;let index = index">
+                <!-- <div class="col-md-4"></div> -->
+                <mat-card class="m-2 col-md-4"
+                    style="border-radius: 15px;z-index: 15;box-shadow: 3px 3px 3px rgba(68, 68, 68, 0.6);">
+                    <span class="table-add d-flex flex-fill justify-content-end">
+                        <a color="primary" size="30" class="mx-2" style="cursor: pointer;"
+                            (click)="categoryCardClicked(categories.entities[categoryId])" data-toggle="modal"
+                            data-target="#newCategoryModal">
+                            <mat-icon style="color: #007bff;">edit</mat-icon>
+                        </a><a style="color: #f44336;" size="30" class="mx-2" style="cursor: pointer;"
+                            (click)="deleteCategory(categoryId)">
+                            <mat-icon style="color: #f44336;">delete</mat-icon>
+                        </a>
+                    </span>
+                    <!-- <div class="row"> -->
+                    <label style="color: #f44336;font-weight:500;">Name : </label>
+                    <h4 style="font-weight:400;">{{categories.entities[categoryId].name}}</h4>
+                    <label style="color: #f44336;font-weight: 500;">Description : </label>
+                    <h5 style="font-size: small;">{{categories.entities[categoryId].description}}</h5>
+                    <!-- </div> -->
+                </mat-card>
+                <!-- <br *ngIf="index%3 == 0"> -->
+            </ng-container>
+        </div>
+    </ng-container>
+</div>
+
+
+
+<div class="modal fade" id="newCategoryModal" tabindex="-1" role="dialog" aria-labelledby="newCategoryLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newCategoryLabel">Add New Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label data-error="wrong" data-success="right" for="categoryName"><span class="redAsterik">*
+                            </span>
+                            Category Name</label>
+                        <input type="text" id="categoryName" class="form-control validate mb-4"
+                            [(ngModel)]="newCategory.name" name="categoryName" #categoryName="ngModel"
+                            [required]="true">
+                        <label data-error="wrong" data-success="right" for="categoryDes"><span class="redAsterik">*
+                            </span>
+                            Category Description</label>
+                        <input type="text" id="categoryDes" class="form-control validate mb-4"
+                            [(ngModel)]="newCategory.description" name="categoryDes" #categoryDes="ngModel"
+                            [required]="true">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveNewCategory()">Save
+                    changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <ng-template #newCategory let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Add New Category</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label data-error="wrong" data-success="right" for="categoryName"><span class="redAsterik">*
+                        </span>
+                        Task Name</label>
+                    <input type="text" id="categoryName" class="form-control validate mb-4"
+                        [(ngModel)]="newCategory.name" name="categoryName" #categoryName="ngModel" [required]="true">
+                    <label data-error="wrong" data-success="right" for="categoryDes"><span class="redAsterik">*
+                        </span>
+                        Task Name</label>
+                    <input type="text" id="categoryDes" class="form-control validate mb-4"
+                        [(ngModel)]="newCategory.description" name="categoryName" #categoryDes="ngModel" [required]="true">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="saveNewCategory()">Save</button>
+        </div>
+    </ng-template> -->
